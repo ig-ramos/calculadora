@@ -1,25 +1,47 @@
-let tela = document.querySelector('#tela');
-const adi = document.querySelector('#adi');
-const sub = document.querySelector('#sub');
-const mult = document.querySelector('#mult');
-const div = document.querySelector('#div');
-let resultado = document.querySelector('#resultado');
-let n1 = tela;
-let n2 = tela;
+function Calculadora(){
+    this.tela = document.querySelector('#tela');
 
-adi.addEventListener('click', () => {
-    tela.value = Number(n1.value) + Number(n2.value);
-})
+    this.iniciar = ()=> {
+        this.btnClick();
+        this.pressEnter();
+    }
 
-sub.addEventListener('click', () => {
-    tela.value = n1.value - n2.value;
-})
+    this.btnClick = () => {
+        document.addEventListener('click', (e) => {
+            const el = e.target;
+            if(el.classList.contains('btn')){ this.escreveNumero(el.value); console.log(el.value)}
+            if(el.classList.contains('res')){ this.resultado(); }
+        })
+    }
 
-mult.addEventListener('click', () => {
-    tela.value = n1.value * n2.value;
-})
+    this.escreveNumero = (valor) => {
+        this.tela.focus();
+        return this.tela.value += valor; 
+    }
 
-div.addEventListener('click', () => {
-    tela.value = n1.value / n2.value;
-})
+    this.resultado = () => {
+        let conta = tela.value;
+        try{
+            conta = eval(conta);
+            if(!conta){
+                alert('INSIRA UM VALOR INVÁLIDO!!!');
+                return;
+            }
+            tela.value = String(conta);
+        }catch(e){
+            alert('ERRO');
+            return;    
+        }
+    }
 
+    this.pressEnter = () => {
+        document.addEventListener('keypress', (e) => {
+            if(e.keyCode !== 13){ return; }
+            this.resultado();
+        })
+    }
+
+}
+
+const calculadora = new Calculadora()
+calculadora.iniciar();
